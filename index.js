@@ -161,8 +161,7 @@ function execute(instruction) {
 
 		// Pull from stack to memory
 		case instructions.PULL_MEM: {
-			const addr = fetch();
-			memory[addr] = memory[increg("sp", -1) - 1];
+			memory[fetch()] = memory[increg("sp", -1) - 1];
 			return true;
 		}
 
@@ -204,13 +203,6 @@ const rl = readline.createInterface({
 });
 
 var keepGoing = true;
-// while (keepGoing) {
-// 	debug();
-// 	keepGoing = step();
-// }
-
-process.stdout.write("\x1b[45mHello world!");
-
 rl.on("line", () => {
 	if (!keepGoing) process.exit(0);
 	debug();

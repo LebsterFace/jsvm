@@ -7,16 +7,12 @@ function setColor(bg, fg) {
 }
 
 function createScreenDevice() {
-	var previousCommand = null;
-
 	return {
 		read: () => 0,
 		write: (addr, value) => {
-			const isCommand = value >> 15;
-
-			if (isCommand) {
-				const background = ((value & 0b0111111100000000) >> 8) + 30,
-					  foreground = (value & 0b0000000011111111) + 30;
+			if (value >> 15) {
+				const background = ((value & 32512) >> 8) + 30, // Top half
+					foreground = (value & 255) + 30; // Bottom half
 
 				setColor(background, foreground);
 			} else {

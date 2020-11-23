@@ -97,6 +97,22 @@ function execute(instruction) {
 			return true;
 		}
 
+		// Move value pointed to by register to register
+		case instructions.MOV_REG_PTR_REG: {
+			const ptr = reg(getRegister());
+			reg(getRegister(), memory.read(ptr));
+			return true;
+		}
+
+		// Move value at [literal + register] to register
+		case instructions.MOV_LIT_OFF_REG: {
+			const base = fetch(),
+				offset = reg(getRegister());
+
+			reg(getRegister(), memory.read(base + offset));
+			return true;
+		}
+
 		// Add register to register
 		case instructions.ADD_REG_REG: {
 			reg("acc", reg(getRegister()) + reg(getRegister()));
@@ -186,14 +202,15 @@ const setColor = (foreground, background) => {
 		bright_white: {fg: 97, bg: 107}
 	};
 
-	const fgCode = color[foreground].fg - 30, bgCode = color[background].bg - 30;
+	const fgCode = color[foreground].fg - 30,
+		bgCode = color[background].bg - 30;
 	prog.push(instructions.MOV_LIT_MEM);
 	prog.push(32768 | ((fgCode << 8) | bgCode));
 	prog.push(0x6000 + latestOffset++);
 };
 
 setColor("red", "black");
-for (let i = 0; i <= 0xFF; i++) writeCharacter(i % 5 ? "*" : " ");
+for (let i = 0; i <= 0xff; i++) writeCharacter(i % 5 ? "*" : " ");
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;

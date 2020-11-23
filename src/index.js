@@ -154,17 +154,47 @@ reg("sp", 0xfeff);
 //#endregion
 
 const prog = [];
+var latestOffset = 0;
 
-const writeCharacter = (character, pos) => {
-	prog.push(instructions.MOV_LIT_MEM, character.charCodeAt(0), 0x6000 + pos);
+const writeCharacter = char => {
+	prog.push(instructions.MOV_LIT_MEM);
+	prog.push(char.charCodeAt(0));
+	prog.push(0x6000 + latestOffset++);
 };
 
-const writeString = (string, offset = 0) => {
-	string.split("").map((char, index) => writeCharacter(char, index + offset));
+const writeString = string => {
+	string.split("").map(writeCharacter);
 };
 
-writeString("Hello world!");
-// for (let i = 0; i <= 0xFF; i++) writeCharacter("*", i);
+const setColor = (foreground, background) => {
+	const color = {
+		black: {fg: 30, bg: 40},
+		red: {fg: 31, bg: 41},
+		green: {fg: 32, bg: 42},
+		yellow: {fg: 33, bg: 43},
+		blue: {fg: 34, bg: 44},
+		magenta: {fg: 35, bg: 45},
+		cyan: {fg: 36, bg: 46},
+		white: {fg: 37, bg: 47},
+		bright_black: {fg: 90, bg: 100},
+		bright_red: {fg: 91, bg: 101},
+		bright_green: {fg: 92, bg: 102},
+		bright_yellow: {fg: 93, bg: 103},
+		bright_blue: {fg: 94, bg: 104},
+		bright_magenta: {fg: 95, bg: 105},
+		bright_cyan: {fg: 96, bg: 106},
+		bright_white: {fg: 97, bg: 107}
+	};
+
+	const fgCode = color[foreground].fg - 30, bgCode = color[background].bg - 30;
+	prog.push(instructions.MOV_LIT_MEM);
+	prog.push(32768 | ((fgCode << 8) | bgCode));
+	prog.push(0x6000 + latestOffset++);
+};
+
+setColor("red", "black");
+for (let i = 0; i <= 0xFF; i++) writeCharacter("I");
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;
+process.stdout.write(`\x1b[0;0;0m`);

@@ -1,11 +1,11 @@
 //#region Setup
 
 const instructions = require("./instructions"),
-	MemoryMapper = require("./memory"),
-	createScreenDevice = require("./screenDevice");
+	MemoryMapper = require("./memoryMapper"),
+	createScreenDevice = require("./screenDevice"),
+	registerNames = require("./registers");
 
-const registerNames = ["ip", "acc", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "sp"],
-	registerMap = registerNames.reduce((map, cv, index) => {
+const registerMap = registerNames.reduce((map, cv, index) => {
 		map[cv] = index;
 		return map;
 	}, {}),
@@ -386,39 +386,4 @@ reg("sp", 0xfeff);
 
 //#endregion
 
-const prog = [
-	0x05, 0x48, 0x6000,
-	0x05, 0x65, 0x6001, 
-	0x05, 0x6c, 0x6002,
-	0x05, 0x6c, 0x6003, 
-	0x05, 0x6f, 0x6004, 
-	0x05, 0x20, 0x6005, 
-	0x05, 0x77, 0x6006, 
-	0x05, 0x6f, 0x6007, 
-	0x05, 0x72, 0x6008, 
-	0x05, 0x6c, 0x6009, 
-	0x05, 0x64, 0x600a, 
-	0x05, 0x21, 0x600b
-];
-
-//#region Machine code programming utilities
-
-var latestOffset = 0;
-
-const writeCharacter = char => {
-	prog.push(instructions.MOV_LIT_MEM);
-	prog.push(char.charCodeAt(0));
-	prog.push(0x6000 + latestOffset++);
-};
-
-const writeString = string => {
-	string.split("").map(writeCharacter);
-};
-
-//#endregion
-
-writeString("Hello world!");
-
-for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;
-process.stdout.write(`\x1b[0;0;0m`);

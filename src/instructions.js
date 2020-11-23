@@ -30,7 +30,14 @@ const generated = [
 	"XOR_REG_REG",
 	"NOT",
 
-	"JMP_NOT_EQ",
+	"JNE_LIT",
+	"JNE_REG",
+	"JEQ_LIT",
+	"JEQ_REG",
+	"JLT_LIT",
+	"JLT_REG",
+	"JGT_LIT",
+	"JGT_REG",
 
 	"CALL_LIT",
 	"CALL_REG",

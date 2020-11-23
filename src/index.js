@@ -255,12 +255,75 @@ function execute(instruction) {
 
 		// ***** BRANCHING ***** \\
 
-		// Jump if not equal
-		case instructions.JMP_NOT_EQ: {
+		// Jump if literal is not equal
+		case instructions.JNE_LIT: {
 			const value = fetch(),
 				addr = fetch();
 
 			if (value !== reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if register is not equal
+		case instructions.JNE_REG: {
+			const value = reg(getRegister()),
+				addr = fetch();
+
+			if (value !== reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if literal is equal
+		case instructions.JEQ_LIT: {
+			const value = fetch(),
+				addr = fetch();
+
+			if (value === reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if register is equal
+		case instructions.JEQ_REG: {
+			const value = reg(getRegister()),
+				addr = fetch();
+
+			if (value === reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if literal is less than
+		case instructions.JLT_LIT: {
+			const value = fetch(),
+				addr = fetch();
+
+			if (value < reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if register is less than
+		case instructions.JLT_REG: {
+			const value = reg(getRegister()),
+				addr = fetch();
+
+			if (value < reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if literal is greater than
+		case instructions.JGT_LIT: {
+			const value = fetch(),
+				addr = fetch();
+
+			if (value > reg("acc")) reg("ip", addr);
+			return true;
+		}
+
+		// Jump if register is greater than
+		case instructions.JGT_REG: {
+			const value = reg(getRegister()),
+				addr = fetch();
+
+			if (value > reg("acc")) reg("ip", addr);
 			return true;
 		}
 

@@ -17,6 +17,19 @@ const generated = [
 	"MUL_LIT_REG",
 	"MUL_REG_REG",
 
+	"LSF_REG_LIT",
+	"LSF_REG_REG",
+	"RSF_REG_LIT",
+	"RSF_REG_REG",
+
+	"AND_REG_LIT",
+	"AND_REG_REG",
+	"OR_REG_LIT",
+	"OR_REG_REG",
+	"XOR_REG_LIT",
+	"XOR_REG_REG",
+	"NOT",
+
 	"JMP_NOT_EQ",
 
 	"CALL_LIT",

@@ -178,6 +178,81 @@ function execute(instruction) {
 			return true;
 		}
 
+		// ***** LOGIC ***** \\
+
+		// Left shift register by literal (in place)
+		case instructions.LSF_REG_LIT: {
+			const register = getRegister();
+			reg(register, reg(register) << fetch());
+			return true;
+		}
+
+		// Left shift register by register (in place)
+		case instructions.LSF_REG_REG: {
+			const register = getRegister(),
+				regB = reg(getRegister());
+			reg(register, reg(register) << regB);
+			return true;
+		}
+
+		// Right shift register by literal (in place)
+		case instructions.RSF_REG_LIT: {
+			const register = getRegister();
+			reg(register, reg(register) >> fetch());
+			return true;
+		}
+
+		// Right shift register by register (in place)
+		case instructions.RSF_REG_REG: {
+			const register = getRegister(),
+				regB = reg(getRegister());
+			reg(register, reg(register) >> regB);
+			return true;
+		}
+
+		// AND register with literal
+		case instructions.AND_REG_LIT: {
+			reg("acc", reg(getRegister()) & fetch());
+			return true;
+		}
+
+		// AND register with register
+		case instructions.AND_REG_REG: {
+			reg("acc", reg(getRegister()) & reg(getRegister()));
+			return true;
+		}
+
+		// OR register with literal
+		case instructions.OR_REG_LIT: {
+			reg("acc", reg(getRegister()) | fetch());
+			return true;
+		}
+
+		// OR register with register
+		case instructions.OR_REG_REG: {
+			reg("acc", reg(getRegister()) | reg(getRegister()));
+			return true;
+		}
+
+		// XOR register with literal
+		case instructions.XOR_REG_LIT: {
+			reg("acc", reg(getRegister()) ^ fetch());
+			return true;
+		}
+
+		// XOR register with register
+		case instructions.XOR_REG_REG: {
+			reg("acc", reg(getRegister()) ^ reg(getRegister()));
+			return true;
+		}
+
+		// NOT register
+		case instructions.NOT: {
+			const register = reg(getRegister());
+			reg("acc", (~register) & 0xFFFF);
+			return true;
+		}
+
 		// ***** BRANCHING ***** \\
 
 		// Jump if not equal
@@ -249,6 +324,9 @@ reg("sp", 0xfeff);
 //#endregion
 
 const prog = [];
+
+//#region Machine code programming utilities
+
 var latestOffset = 0;
 
 const writeCharacter = char => {
@@ -288,8 +366,9 @@ const setColor = (foreground, background) => {
 	prog.push(0x6000 + latestOffset++);
 };
 
-// setColor("red", "black");
-// for (let i = 0; i <= 0xff; i++) writeCharacter(i % 5 ? "*" : " ");
+//#endregion
+
+writeString("Hello world!");
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;

@@ -1,7 +1,8 @@
 //#region Setup
 
-const instructions = require("./instructions");
-const MemoryMapper = require("./memory");
+const instructions = require("./instructions"),
+	MemoryMapper = require("./memory"),
+	createScreenDevice = require("./screenDevice");
 
 const registerNames = ["ip", "acc", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "sp"],
 	registerMap = registerNames.reduce((map, cv, index) => {
@@ -9,7 +10,6 @@ const registerNames = ["ip", "acc", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r
 		return map;
 	}, {}),
 	registers = new Uint16Array(registerNames.length);
-
 
 function createMemoryDevice() {
 	const memory = new Uint16Array(65536);
@@ -26,7 +26,8 @@ function createMemoryDevice() {
 }
 
 const memory = new MemoryMapper();
-memory.map(createMemoryDevice(), 0, 0xFFFF);
+memory.map(createMemoryDevice(), 0, 0xffff);
+memory.map(createScreenDevice(), 0x6000, 0x60ff);
 
 //#endregion
 //#region Helper
@@ -56,7 +57,6 @@ function increg(name, amount = 1) {
 
 function execute(instruction) {
 	switch (instruction) {
-
 		// Cease execution
 		case instructions.HALT:
 			return false;
@@ -153,13 +153,18 @@ reg("sp", 0xfeff);
 
 //#endregion
 
-const prog = [
-	instructions.MOV_LIT_REG, 0x69, 0x00,
-	instructions.ADD_LIT_REG, 0x07, 0x00
-];
+const prog = [];
+
+const writeCharacter = (character, pos) => {
+	prog.push(instructions.MOV_LIT_MEM, character.charCodeAt(0), 0x6000 + pos);
+};
+
+const writeString = (string, offset = 0) => {
+	string.split("").map((char, index) => writeCharacter(char, index + offset));
+};
+
+writeString("Hello world!");
+// for (let i = 0; i <= 0xFF; i++) writeCharacter("*", i);
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;
-registerNames.forEach(n => {
-	console.log(`${n} : $${reg(n).toString(16)}`);
-});

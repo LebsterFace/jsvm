@@ -61,14 +61,12 @@ function execute(instruction) {
 		case instructions.HALT:
 			return false;
 
-
 		// ***** MOVING ***** \\
 
 		// Move literal to register
 		case instructions.MOV_LIT_REG: {
-			const value = fetch(),
-				regName = getRegister();
-			reg(regName, value);
+			const value = fetch();
+			reg(getRegister(), value);
 			return true;
 		}
 
@@ -116,9 +114,7 @@ function execute(instruction) {
 			return true;
 		}
 
-
 		// ***** ARITHMETIC ***** \\
-
 
 		// Add register to register
 		case instructions.ADD_REG_REG: {
@@ -128,28 +124,32 @@ function execute(instruction) {
 
 		// Add literal to register
 		case instructions.ADD_LIT_REG: {
-			const value = fetch(), register = reg(getRegister());
+			const value = fetch(),
+				register = reg(getRegister());
 			reg("acc", register + value);
 			return true;
 		}
 
 		// Subtract literal from register
 		case instructions.SUB_LIT_REG: {
-			const value = fetch(), register = reg(getRegister());
+			const value = fetch(),
+				register = reg(getRegister());
 			reg("acc", register - value);
 			return true;
 		}
 
 		// Subtract register from literal
 		case instructions.SUB_REG_LIT: {
-			const register = reg(getRegister()), value = fetch();
+			const register = reg(getRegister()),
+				value = fetch();
 			reg("acc", value - register);
 			return true;
 		}
 
 		// Subtract register from register
 		case instructions.SUB_REG_REG: {
-			const regA = reg(getRegister()), regB = reg(getRegister());
+			const regA = reg(getRegister()),
+				regB = reg(getRegister());
 			reg("acc", regA - regB);
 			return true;
 		}
@@ -180,7 +180,6 @@ function execute(instruction) {
 
 		// ***** BRANCHING ***** \\
 
-
 		// Jump if not equal
 		case instructions.JMP_NOT_EQ: {
 			const value = fetch(),
@@ -190,9 +189,27 @@ function execute(instruction) {
 			return true;
 		}
 
+		// Call subroutine located at literal
+		case instructions.CALL_LIT: {
+			memory.write(increg("sp"), reg("ip"));
+			reg("ip", fetch());
+			return true;
+		}
+
+		// Call subroutine located at register
+		case instructions.CALL_LIT: {
+			memory.write(increg("sp"), reg("ip"));
+			reg("ip", reg(getRegister()));
+			return true;
+		}
+
+		// Return from subroutine
+		case instructions.RET: {
+			reg("ip", memory.read(increg("sp", -1) - 1));
+			return true;
+		}
 
 		// ***** STACK ***** \\
-
 
 		// Push literal to stack
 		case instructions.PUSH_LIT: {
@@ -271,8 +288,8 @@ const setColor = (foreground, background) => {
 	prog.push(0x6000 + latestOffset++);
 };
 
-setColor("red", "black");
-for (let i = 0; i <= 0xff; i++) writeCharacter(i % 5 ? "*" : " ");
+// setColor("red", "black");
+// for (let i = 0; i <= 0xff; i++) writeCharacter(i % 5 ? "*" : " ");
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;

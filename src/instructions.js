@@ -19,6 +19,10 @@ const generated = [
 
 	"JMP_NOT_EQ",
 
+	"CALL_LIT",
+	"CALL_REG",
+	"RET",
+
 	"PUSH_LIT",
 	"PUSH_REG",
 	"PULL_REG",

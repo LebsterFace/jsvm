@@ -218,6 +218,12 @@ function execute(instruction) {
 			reg(register, memory.read(increg("sp", -1) - 1));
 			return true;
 		}
+
+		// Pop value from stack
+		case instructions.POP: {
+			increg("sp", -1);
+			return true;
+		}
 	}
 }
 

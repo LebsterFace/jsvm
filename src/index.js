@@ -61,6 +61,9 @@ function execute(instruction) {
 		case instructions.HALT:
 			return false;
 
+
+		// ***** MOVING ***** \\
+
 		// Move literal to register
 		case instructions.MOV_LIT_REG: {
 			const value = fetch(),
@@ -113,6 +116,10 @@ function execute(instruction) {
 			return true;
 		}
 
+
+		// ***** ARITHMETIC ***** \\
+
+
 		// Add register to register
 		case instructions.ADD_REG_REG: {
 			reg("acc", reg(getRegister()) + reg(getRegister()));
@@ -121,22 +128,71 @@ function execute(instruction) {
 
 		// Add literal to register
 		case instructions.ADD_LIT_REG: {
-			const value = fetch();
-			increg(getRegister(), value);
+			const value = fetch(), register = reg(getRegister());
+			reg("acc", register + value);
 			return true;
 		}
+
+		// Subtract literal from register
+		case instructions.SUB_LIT_REG: {
+			const value = fetch(), register = reg(getRegister());
+			reg("acc", register - value);
+			return true;
+		}
+
+		// Subtract register from literal
+		case instructions.SUB_REG_LIT: {
+			const register = reg(getRegister()), value = fetch();
+			reg("acc", value - register);
+			return true;
+		}
+
+		// Subtract register from register
+		case instructions.SUB_REG_REG: {
+			const regA = reg(getRegister()), regB = reg(getRegister());
+			reg("acc", regA - regB);
+			return true;
+		}
+
+		// Multiply literal by register
+		case instructions.MUL_LIT_REG: {
+			reg("acc", fetch() * reg(getRegister()));
+			return true;
+		}
+
+		// Multiply register by register
+		case instructions.MUL_LIT_REG: {
+			reg("acc", reg(getRegister()) * reg(getRegister()));
+			return true;
+		}
+
+		// Increment register (in place)
+		case instructions.INC_REG: {
+			increg(getRegister());
+			return true;
+		}
+
+		// Decrement register (in place)
+		case instructions.DEC_REG: {
+			increg(getRegister(), -1);
+			return true;
+		}
+
+		// ***** BRANCHING ***** \\
+
 
 		// Jump if not equal
 		case instructions.JMP_NOT_EQ: {
 			const value = fetch(),
 				addr = fetch();
 
-			if (value !== reg("acc")) {
-				reg("ip", addr);
-			}
-
+			if (value !== reg("acc")) reg("ip", addr);
 			return true;
 		}
+
+
+		// ***** STACK ***** \\
+
 
 		// Push literal to stack
 		case instructions.PUSH_LIT: {

@@ -193,7 +193,7 @@ const setColor = (foreground, background) => {
 };
 
 setColor("red", "black");
-for (let i = 0; i <= 0xFF; i++) writeCharacter("I");
+for (let i = 0; i <= 0xFF; i++) writeCharacter(i % 5 ? "*" : " ");
 
 for (const i in prog) memory.write(i, prog[i]);
 while (execute(fetch())) continue;

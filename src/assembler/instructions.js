@@ -4,6 +4,7 @@ const A = require("arcsecond"),
 const mov = A.choice([
 	lit_reg("mov", "MOV_LIT_REG"),
 	reg_reg("mov", "MOV_REG_REG"),
+	reg_mem("mov", "MOV_REG_MEM"),
 	mem_reg("mov", "MOV_MEM_REG"),
 	lit_mem("mov", "MOV_LIT_MEM"),
 	reg_ptr_reg("mov", "MOV_REG_PTR_REG"),
@@ -31,27 +32,27 @@ const mul = A.choice([
 
 const lsf = A.choice([
 	reg_reg("lsf", "LSF_REG_REG"),
-	lit_reg("lsf", "LSF_LIT_REG")
+	reg_lit("lsf", "LSF_REG_LIT")
 ]);
 
 const rsf = A.choice([
 	reg_reg("rsf", "RSF_REG_REG"),
-	lit_reg("rsf", "RSF_LIT_REG")
+	reg_lit("rsf", "RSF_REG_LIT")
 ]);
 
 const and = A.choice([
 	reg_reg("and", "AND_REG_REG"),
-	lit_reg("and", "AND_LIT_REG")
+	reg_lit("and", "AND_REG_LIT")
 ]);
 
 const or = A.choice([
-	reg_reg("or", "XOR_REG_REG"),
-	lit_reg("or", "XOR_LIT_REG")
+	reg_reg("or", "OR_REG_REG"),
+	reg_lit("or", "OR_REG_LIT")
 ]);
 
 const xor = A.choice([
 	reg_reg("xor", "XOR_REG_REG"),
-	lit_reg("xor", "XOR_LIT_REG")
+	reg_lit("xor", "XOR_REG_LIT")
 ]);
 
 const not = single_reg("not", "NOT");
@@ -77,8 +78,8 @@ const jgt = A.choice([
 ]);
 
 const jsr = A.choice([
-	single_lit("jsr", "jsr_LIT"),
-	single_reg("jsr", "jsr_REG")
+	single_lit("jsr", "JSR_LIT"),
+	single_reg("jsr", "JSR_REG")
 ]);
 
 const ret = no_args("ret", "RET");
@@ -89,11 +90,12 @@ const push = A.choice([
 ]);
 
 const pull = A.choice([
-	single_reg("pull", "PUSH_REG"),
-	single_mem("pull", "PUSH_MEM")
+	single_reg("pull", "PULL_REG"),
+	single_mem("pull", "PULL_MEM")
 ]);
 
 const pop = no_args("pop", "POP");
+const halt = no_args("halt", "HALT");
 
 module.exports = A.choice([
 	mov,
@@ -116,5 +118,6 @@ module.exports = A.choice([
 	ret,
 	push,
 	pull,
-	pop
+	pop,
+	halt
 ]);

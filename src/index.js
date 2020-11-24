@@ -341,6 +341,18 @@ function execute(instruction) {
 			return true;
 		}
 
+		// Jump to register
+		case instructions.JMP_REG: {
+			reg("ip", reg(getRegister()));
+			return true;
+		}
+
+		// Jump to literal
+		case instructions.JMP_LIT: {
+			reg("ip", fetch());
+			return true;
+		}
+
 		// Return from subroutine
 		case instructions.RET: {
 			reg("ip", memory.read(increg("sp", -1) - 1));

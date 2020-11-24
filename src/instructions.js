@@ -38,6 +38,8 @@ const generated = [
 	"JLT_REG",
 	"JGT_LIT",
 	"JGT_REG",
+	"JMP_LIT",
+	"JMP_REG",
 
 	"JSR_LIT",
 	"JSR_REG",

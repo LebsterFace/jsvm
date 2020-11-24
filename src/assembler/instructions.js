@@ -82,6 +82,11 @@ const jsr = A.choice([
 	single_reg("jsr", "JSR_REG")
 ]);
 
+const jmp = A.choice([
+	single_lit("jmp", "JMP_LIT"),
+	single_reg("jmp", "JMP_REG")
+]);
+
 const ret = no_args("ret", "RET");
 
 const push = A.choice([
@@ -115,6 +120,7 @@ module.exports = A.choice([
 	jeq,
 	jgt,
 	jsr,
+	jmp,
 	ret,
 	push,
 	pull,

@@ -39,8 +39,8 @@ const generated = [
 	"JGT_LIT",
 	"JGT_REG",
 
-	"CALL_LIT",
-	"CALL_REG",
+	"JSR_LIT",
+	"JSR_REG",
 	"RET",
 
 	"PUSH_LIT",

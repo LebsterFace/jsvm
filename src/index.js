@@ -328,14 +328,14 @@ function execute(instruction) {
 		}
 
 		// Call subroutine located at literal
-		case instructions.CALL_LIT: {
+		case instructions.JSR_LIT: {
 			memory.write(increg("sp"), reg("ip"));
 			reg("ip", fetch());
 			return true;
 		}
 
 		// Call subroutine located at register
-		case instructions.CALL_LIT: {
+		case instructions.JSR_LIT: {
 			memory.write(increg("sp"), reg("ip"));
 			reg("ip", reg(getRegister()));
 			return true;

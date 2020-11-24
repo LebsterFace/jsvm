@@ -1,16 +1,17 @@
 const A = require("arcsecond"),
 	{inspect} = require("util"),
-	{asType, optionalWhitespace, literal, register, variable} = require("./common"),
+	{asType, optionalWhitespace, literal, register, variable, address} = require("./common"),
 	expression = require("./expressions");
 
 const deepLog = obj => console.log(inspect(obj, {depth: Infinity, colors: true}));
+const lit = A.choice([expression, variable, literal]),
+	  addr = A.choice([address, A.char("&").chain(() => expression)]);
 
-const litvalue = A.choice([expression, variable, literal]);
 
 const mov_lit_reg = A.coroutine(function*() {
 	yield A.str("mov");
 	yield optionalWhitespace;
-	const arg1 = yield litvalue;
+	const arg1 = yield lit;
 	yield optionalWhitespace;
 	const arg2 = yield register;
 	yield A.optionalWhitespace;
@@ -20,4 +21,4 @@ const mov_lit_reg = A.coroutine(function*() {
 	});
 });
 
-deepLog(mov_lit_reg.run("mov [!hello + (12/231*$243+0b1111)] acc"));
+deepLog(mov_lit_reg.run("mov $12 acc"));

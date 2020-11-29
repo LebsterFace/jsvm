@@ -3,7 +3,8 @@ const asType = type => value => ({type, value});
 
 const optionalWhitespace = A.many(A.anyOfString(" \t")),
 	whitespace = A.many1(A.anyOfString(" \t")),
-	upperOrLower = str => A.choice([A.str(str.toUpperCase()), A.str(str.toLowerCase())]);
+	upperOrLower = str => A.choice([A.str(str.toUpperCase()), A.str(str.toLowerCase())]),
+	validIdentifier = A.regex(/^[a-z]\w*/i);
 
 const hexLit = A.char("$").chain(() => A.regex(/^[0-9a-f]+/i).map(x => parseInt(x, 16))),
 	binLit = A.str("0b").chain(() => A.many1(A.anyOfString("01")).map(x => parseInt(x.join(""), 2))),
@@ -15,6 +16,6 @@ const address = A.char("&").chain(() => A.regex(/^[0-9a-f]+/i).map(x => parseInt
 const registers = require("../registers"),
 	register = A.choice(registers.map(upperOrLower)).map(x => x.toLowerCase()).map(asType("REGISTER"));
 
-const variable = A.char("!").chain(() => A.letters).map(asType("VARIABLE"));
+const variable = A.char("!").chain(() => validIdentifier).map(asType("VARIABLE"));
 
 module.exports = {asType, optionalWhitespace, whitespace, literal, register, variable, address};

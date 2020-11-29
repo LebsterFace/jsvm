@@ -17,4 +17,4 @@ const registers = require("../registers"),
 
 const variable = A.char("!").chain(() => A.letters).map(asType("VARIABLE"));
 
-module.exports = {asType, optionalWhitespace,whitespace, literal, register, variable, address};
+module.exports = {asType, optionalWhitespace, whitespace, literal, register, variable, address};

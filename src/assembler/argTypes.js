@@ -2,7 +2,7 @@ const A = require("arcsecond"),
 	{asType, whitespace, literal, register, variable, address} = require("./common"),
 	expression = require("./expressions");
 
-const lit = A.choice([expression, variable, literal]),
+const lit = A.choice([literal, variable, expression]),
 	addr = A.choice([address, A.char("&").chain(() => expression)]);
 
 const lit_reg = (name, instruction) =>

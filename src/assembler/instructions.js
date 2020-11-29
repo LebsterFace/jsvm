@@ -102,10 +102,7 @@ const pull = A.choice([
 const pop = no_args("pop", "POP");
 const halt = no_args("halt", "HALT");
 
-const definition = require("./definition");
-
 module.exports = A.optionalWhitespace.chain(() => A.choice([
-	definition,
 	mov,
 	add,
 	sub,

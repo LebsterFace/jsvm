@@ -1,0 +1,12 @@
+mov 'H' &6000
+mov 'e' &6001
+mov 'l' &6002
+mov 'l' &6003
+mov 'o' &6004
+mov ' ' &6005
+mov 'W' &6006
+mov 'o' &6007
+mov 'r' &6008
+mov 'l' &6009
+mov 'd' &600a
+mov '!' &600b

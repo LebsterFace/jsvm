@@ -64,49 +64,49 @@ function execute(instruction) {
 		// ***** MOVING ***** \\
 
 		// Move literal to register
-		case instructions.MOV_LIT_REG: {
+		case instructions.MOV_LIT_REG.opcode: {
 			const value = fetch();
 			reg(getRegister(), value);
 			return true;
 		}
 
 		// Move register to register
-		case instructions.MOV_REG_REG: {
+		case instructions.MOV_REG_REG.opcode: {
 			const value = reg(getRegister());
 			reg(getRegister(), value);
 			return true;
 		}
 
 		// Move register to memory
-		case instructions.MOV_REG_MEM: {
+		case instructions.MOV_REG_MEM.opcode: {
 			const value = reg(getRegister());
 			memory.write(fetch(), value);
 			return true;
 		}
 
 		// Move memory to register
-		case instructions.MOV_MEM_REG: {
+		case instructions.MOV_MEM_REG.opcode: {
 			const value = memory.read(fetch());
 			reg(getRegister(), value);
 			return true;
 		}
 
 		// Move literal to memory
-		case instructions.MOV_LIT_MEM: {
+		case instructions.MOV_LIT_MEM.opcode: {
 			const value = fetch();
 			memory.write(fetch(), value);
 			return true;
 		}
 
 		// Move value pointed to by register to register
-		case instructions.MOV_REG_PTR_REG: {
+		case instructions.MOV_REG_PTR_REG.opcode: {
 			const ptr = reg(getRegister());
 			reg(getRegister(), memory.read(ptr));
 			return true;
 		}
 
 		// Move value at [literal + register] to register
-		case instructions.MOV_LIT_OFF_REG: {
+		case instructions.MOV_LIT_OFF_REG.opcode: {
 			const base = fetch(),
 				offset = reg(getRegister());
 
@@ -117,13 +117,13 @@ function execute(instruction) {
 		// ***** ARITHMETIC ***** \\
 
 		// Add register to register
-		case instructions.ADD_REG_REG: {
+		case instructions.ADD_REG_REG.opcode: {
 			reg("acc", reg(getRegister()) + reg(getRegister()));
 			return true;
 		}
 
 		// Add literal to register
-		case instructions.ADD_LIT_REG: {
+		case instructions.ADD_LIT_REG.opcode: {
 			const value = fetch(),
 				register = reg(getRegister());
 			reg("acc", register + value);
@@ -131,7 +131,7 @@ function execute(instruction) {
 		}
 
 		// Subtract literal from register
-		case instructions.SUB_LIT_REG: {
+		case instructions.SUB_LIT_REG.opcode: {
 			const value = fetch(),
 				register = reg(getRegister());
 			reg("acc", register - value);
@@ -139,7 +139,7 @@ function execute(instruction) {
 		}
 
 		// Subtract register from literal
-		case instructions.SUB_REG_LIT: {
+		case instructions.SUB_REG_LIT.opcode: {
 			const register = reg(getRegister()),
 				value = fetch();
 			reg("acc", value - register);
@@ -147,7 +147,7 @@ function execute(instruction) {
 		}
 
 		// Subtract register from register
-		case instructions.SUB_REG_REG: {
+		case instructions.SUB_REG_REG.opcode: {
 			const regA = reg(getRegister()),
 				regB = reg(getRegister());
 			reg("acc", regA - regB);
@@ -155,25 +155,25 @@ function execute(instruction) {
 		}
 
 		// Multiply literal by register
-		case instructions.MUL_LIT_REG: {
+		case instructions.MUL_LIT_REG.opcode: {
 			reg("acc", fetch() * reg(getRegister()));
 			return true;
 		}
 
 		// Multiply register by register
-		case instructions.MUL_LIT_REG: {
+		case instructions.MUL_LIT_REG.opcode: {
 			reg("acc", reg(getRegister()) * reg(getRegister()));
 			return true;
 		}
 
 		// Increment register (in place)
-		case instructions.INC_REG: {
+		case instructions.INC_REG.opcode: {
 			increg(getRegister());
 			return true;
 		}
 
 		// Decrement register (in place)
-		case instructions.DEC_REG: {
+		case instructions.DEC_REG.opcode: {
 			increg(getRegister(), -1);
 			return true;
 		}
@@ -181,14 +181,14 @@ function execute(instruction) {
 		// ***** LOGIC ***** \\
 
 		// Left shift register by literal (in place)
-		case instructions.LSF_REG_LIT: {
+		case instructions.LSF_REG_LIT.opcode: {
 			const register = getRegister();
 			reg(register, reg(register) << fetch());
 			return true;
 		}
 
 		// Left shift register by register (in place)
-		case instructions.LSF_REG_REG: {
+		case instructions.LSF_REG_REG.opcode: {
 			const register = getRegister(),
 				regB = reg(getRegister());
 			reg(register, reg(register) << regB);
@@ -196,14 +196,14 @@ function execute(instruction) {
 		}
 
 		// Right shift register by literal (in place)
-		case instructions.RSF_REG_LIT: {
+		case instructions.RSF_REG_LIT.opcode: {
 			const register = getRegister();
 			reg(register, reg(register) >> fetch());
 			return true;
 		}
 
 		// Right shift register by register (in place)
-		case instructions.RSF_REG_REG: {
+		case instructions.RSF_REG_REG.opcode: {
 			const register = getRegister(),
 				regB = reg(getRegister());
 			reg(register, reg(register) >> regB);
@@ -211,43 +211,43 @@ function execute(instruction) {
 		}
 
 		// AND register with literal
-		case instructions.AND_REG_LIT: {
+		case instructions.AND_REG_LIT.opcode: {
 			reg("acc", reg(getRegister()) & fetch());
 			return true;
 		}
 
 		// AND register with register
-		case instructions.AND_REG_REG: {
+		case instructions.AND_REG_REG.opcode: {
 			reg("acc", reg(getRegister()) & reg(getRegister()));
 			return true;
 		}
 
 		// OR register with literal
-		case instructions.OR_REG_LIT: {
+		case instructions.OR_REG_LIT.opcode: {
 			reg("acc", reg(getRegister()) | fetch());
 			return true;
 		}
 
 		// OR register with register
-		case instructions.OR_REG_REG: {
+		case instructions.OR_REG_REG.opcode: {
 			reg("acc", reg(getRegister()) | reg(getRegister()));
 			return true;
 		}
 
 		// XOR register with literal
-		case instructions.XOR_REG_LIT: {
+		case instructions.XOR_REG_LIT.opcode: {
 			reg("acc", reg(getRegister()) ^ fetch());
 			return true;
 		}
 
 		// XOR register with register
-		case instructions.XOR_REG_REG: {
+		case instructions.XOR_REG_REG.opcode: {
 			reg("acc", reg(getRegister()) ^ reg(getRegister()));
 			return true;
 		}
 
 		// NOT register
-		case instructions.NOT: {
+		case instructions.NOT.opcode: {
 			const register = reg(getRegister());
 			reg("acc", ~register & 0xffff);
 			return true;
@@ -256,7 +256,7 @@ function execute(instruction) {
 		// ***** BRANCHING ***** \\
 
 		// Jump if literal is not equal
-		case instructions.JNE_LIT: {
+		case instructions.JNE_LIT.opcode: {
 			const value = fetch(),
 				addr = fetch();
 
@@ -265,7 +265,7 @@ function execute(instruction) {
 		}
 
 		// Jump if register is not equal
-		case instructions.JNE_REG: {
+		case instructions.JNE_REG.opcode: {
 			const value = reg(getRegister()),
 				addr = fetch();
 
@@ -274,7 +274,7 @@ function execute(instruction) {
 		}
 
 		// Jump if literal is equal
-		case instructions.JEQ_LIT: {
+		case instructions.JEQ_LIT.opcode: {
 			const value = fetch(),
 				addr = fetch();
 
@@ -283,7 +283,7 @@ function execute(instruction) {
 		}
 
 		// Jump if register is equal
-		case instructions.JEQ_REG: {
+		case instructions.JEQ_REG.opcode: {
 			const value = reg(getRegister()),
 				addr = fetch();
 
@@ -292,7 +292,7 @@ function execute(instruction) {
 		}
 
 		// Jump if literal is less than
-		case instructions.JLT_LIT: {
+		case instructions.JLT_LIT.opcode: {
 			const value = fetch(),
 				addr = fetch();
 
@@ -301,7 +301,7 @@ function execute(instruction) {
 		}
 
 		// Jump if register is less than
-		case instructions.JLT_REG: {
+		case instructions.JLT_REG.opcode: {
 			const value = reg(getRegister()),
 				addr = fetch();
 
@@ -310,7 +310,7 @@ function execute(instruction) {
 		}
 
 		// Jump if literal is greater than
-		case instructions.JGT_LIT: {
+		case instructions.JGT_LIT.opcode: {
 			const value = fetch(),
 				addr = fetch();
 
@@ -319,7 +319,7 @@ function execute(instruction) {
 		}
 
 		// Jump if register is greater than
-		case instructions.JGT_REG: {
+		case instructions.JGT_REG.opcode: {
 			const value = reg(getRegister()),
 				addr = fetch();
 
@@ -328,33 +328,33 @@ function execute(instruction) {
 		}
 
 		// Call subroutine located at literal
-		case instructions.JSR_LIT: {
+		case instructions.JSR_LIT.opcode: {
 			memory.write(increg("sp"), reg("ip"));
 			reg("ip", fetch());
 			return true;
 		}
 
 		// Call subroutine located at register
-		case instructions.JSR_LIT: {
+		case instructions.JSR_LIT.opcode: {
 			memory.write(increg("sp"), reg("ip"));
 			reg("ip", reg(getRegister()));
 			return true;
 		}
 
 		// Jump to register
-		case instructions.JMP_REG: {
+		case instructions.JMP_REG.opcode: {
 			reg("ip", reg(getRegister()));
 			return true;
 		}
 
 		// Jump to literal
-		case instructions.JMP_LIT: {
+		case instructions.JMP_LIT.opcode: {
 			reg("ip", fetch());
 			return true;
 		}
 
 		// Return from subroutine
-		case instructions.RET: {
+		case instructions.RET.opcode: {
 			reg("ip", memory.read(increg("sp", -1) - 1));
 			return true;
 		}
@@ -362,32 +362,32 @@ function execute(instruction) {
 		// ***** STACK ***** \\
 
 		// Push literal to stack
-		case instructions.PUSH_LIT: {
+		case instructions.PUSH_LIT.opcode: {
 			memory.write(increg("sp"), fetch());
 			return true;
 		}
 
 		// Push register to stack
-		case instructions.PUSH_REG: {
+		case instructions.PUSH_REG.opcode: {
 			memory.write(increg("sp"), reg(getRegister()));
 			return true;
 		}
 
 		// Pull from stack to memory
-		case instructions.PULL_MEM: {
+		case instructions.PULL_MEM.opcode: {
 			memory.write(fetch(), memory.read(increg("sp", -1) - 1));
 			return true;
 		}
 
 		// Pull from stack to register
-		case instructions.PULL_REG: {
+		case instructions.PULL_REG.opcode: {
 			const register = getRegister();
 			reg(register, memory.read(increg("sp", -1) - 1));
 			return true;
 		}
 
 		// Pop value from stack
-		case instructions.POP: {
+		case instructions.POP.opcode: {
 			increg("sp", -1);
 			return true;
 		}
@@ -398,4 +398,7 @@ reg("sp", 0xfeff);
 
 //#endregion
 
-while (execute(fetch())) continue;
+module.exports = prog => {
+	for (const i in prog) memory.write(i, prog[i]);
+	while (execute(fetch())) continue;	
+};

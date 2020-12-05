@@ -1,48 +1,186 @@
 module.exports = {
-	MOV_LIT_REG     : 0x01,
-	MOV_REG_REG     : 0x02,
-	MOV_REG_MEM     : 0x03,
-	MOV_MEM_REG     : 0x04,
-	MOV_LIT_MEM     : 0x05,
-	MOV_REG_PTR_REG : 0x06,
-	MOV_LIT_OFF_REG : 0x07,
-	ADD_REG_REG     : 0x08,
-	ADD_LIT_REG     : 0x09,
-	SUB_REG_REG     : 0x0A,
-	SUB_LIT_REG     : 0x0B,
-	SUB_REG_LIT     : 0x0C,
-	INC_REG         : 0x0D,
-	DEC_REG         : 0x0E,
-	MUL_LIT_REG     : 0x0F,
-	MUL_REG_REG     : 0x10,
-	LSF_REG_LIT     : 0x11,
-	LSF_REG_REG     : 0x12,
-	RSF_REG_LIT     : 0x13,
-	RSF_REG_REG     : 0x14,
-	AND_REG_LIT     : 0x15,
-	AND_REG_REG     : 0x16,
-	OR_REG_LIT      : 0x17,
-	OR_REG_REG      : 0x18,
-	XOR_REG_LIT     : 0x19,
-	XOR_REG_REG     : 0x1A,
-	NOT             : 0x1B,
-	JNE_LIT         : 0x1C,
-	JNE_REG         : 0x1D,
-	JEQ_LIT         : 0x1E,
-	JEQ_REG         : 0x1F,
-	JLT_LIT         : 0x20,
-	JLT_REG         : 0x21,
-	JGT_LIT         : 0x22,
-	JGT_REG         : 0x23,
-	JMP_LIT         : 0x24,
-	JMP_REG         : 0x25,
-	JSR_LIT         : 0x26,
-	JSR_REG         : 0x27,
-	RET             : 0x28,
-	PUSH_LIT        : 0x29,
-	PUSH_REG        : 0x2A,
-	PULL_REG        : 0x2B,
-	PULL_MEM        : 0x2C,
-	POP             : 0x2D,
-	HALT: 0xFFFF
+	MOV_LIT_REG: {
+		opcode: 0x01,
+		size: 2
+	},
+	MOV_REG_REG: {
+		opcode: 0x02,
+		size: 2
+	},
+	MOV_REG_MEM: {
+		opcode: 0x03,
+		size: 2
+	},
+	MOV_MEM_REG: {
+		opcode: 0x04,
+		size: 2
+	},
+	MOV_LIT_MEM: {
+		opcode: 0x05,
+		size: 2
+	},
+	MOV_REG_PTR_REG: {
+		opcode: 0x06,
+		size: 2
+	},
+	MOV_LIT_OFF_REG: {
+		opcode: 0x07,
+		size: 2
+	},
+	ADD_REG_REG: {
+		opcode: 0x08,
+		size: 2
+	},
+	ADD_LIT_REG: {
+		opcode: 0x09,
+		size: 2
+	},
+	SUB_REG_REG: {
+		opcode: 0x0a,
+		size: 2
+	},
+	SUB_LIT_REG: {
+		opcode: 0x0b,
+		size: 2
+	},
+	SUB_REG_LIT: {
+		opcode: 0x0c,
+		size: 2
+	},
+	INC_REG: {
+		opcode: 0x0d,
+		size: 1
+	},
+	DEC_REG: {
+		opcode: 0x0e,
+		size: 1
+	},
+	MUL_LIT_REG: {
+		opcode: 0x0f,
+		size: 2
+	},
+	MUL_REG_REG: {
+		opcode: 0x10,
+		size: 2
+	},
+	LSF_REG_LIT: {
+		opcode: 0x11,
+		size: 2
+	},
+	LSF_REG_REG: {
+		opcode: 0x12,
+		size: 2
+	},
+	RSF_REG_LIT: {
+		opcode: 0x13,
+		size: 2
+	},
+	RSF_REG_REG: {
+		opcode: 0x14,
+		size: 2
+	},
+	AND_REG_LIT: {
+		opcode: 0x15,
+		size: 2
+	},
+	AND_REG_REG: {
+		opcode: 0x16,
+		size: 2
+	},
+	OR_REG_LIT: {
+		opcode: 0x17,
+		size: 2
+	},
+	OR_REG_REG: {
+		opcode: 0x18,
+		size: 2
+	},
+	XOR_REG_LIT: {
+		opcode: 0x19,
+		size: 2
+	},
+	XOR_REG_REG: {
+		opcode: 0x1a,
+		size: 2
+	},
+	NOT: {
+		opcode: 0x1b,
+		size: 0
+	},
+	JNE_LIT: {
+		opcode: 0x1c,
+		size: 1
+	},
+	JNE_REG: {
+		opcode: 0x1d,
+		size: 1
+	},
+	JEQ_LIT: {
+		opcode: 0x1e,
+		size: 1
+	},
+	JEQ_REG: {
+		opcode: 0x1f,
+		size: 1
+	},
+	JLT_LIT: {
+		opcode: 0x20,
+		size: 1
+	},
+	JLT_REG: {
+		opcode: 0x21,
+		size: 1
+	},
+	JGT_LIT: {
+		opcode: 0x22,
+		size: 1
+	},
+	JGT_REG: {
+		opcode: 0x23,
+		size: 1
+	},
+	JMP_LIT: {
+		opcode: 0x24,
+		size: 1
+	},
+	JMP_REG: {
+		opcode: 0x25,
+		size: 1
+	},
+	JSR_LIT: {
+		opcode: 0x26,
+		size: 1
+	},
+	JSR_REG: {
+		opcode: 0x27,
+		size: 1
+	},
+	RET: {
+		opcode: 0x28,
+		size: 0
+	},
+	PUSH_LIT: {
+		opcode: 0x29,
+		size: 1
+	},
+	PUSH_REG: {
+		opcode: 0x2a,
+		size: 1
+	},
+	PULL_REG: {
+		opcode: 0x2b,
+		size: 1
+	},
+	PULL_MEM: {
+		opcode: 0x2c,
+		size: 1
+	},
+	POP: {
+		opcode: 0x2d,
+		size: 0
+	},
+	HALT: {
+		opcode: 0xffff,
+		size: 0
+	}
 };

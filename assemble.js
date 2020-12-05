@@ -1,0 +1,1 @@
+console.log(require("./src/assembler")(require("fs").readFileSync(process.argv[2]).toString()).join(" "));
